@@ -55,7 +55,7 @@ num_channels = 8
  at minimum (700) then the pulse between frames increases by 8,000 (1,000 for each frame)
  to 11,700 in order to make up the difference and keep the frame size at 20,000
 """
-end_pulse_max = 11700
+frame_size = 20000
 
 #Generate synchronization pulse.
 pi.wave_add_generic([pulse(pin_mask, 0, 4000)])
@@ -74,15 +74,12 @@ for length in range(0, 2):
     total_pulse_length = pulse_length[length] * 8
 
     for channel in range(8):
-        # 300 delay
+        # 300 delay and 700-1,700 pulse
         pulses += [pulse(0, pin_mask, delay), pulse(pin_mask, 0, pulse_length[length] - delay)]
 
-        # 700-1,700 pulse
 
-    # 9th 300 delay
-    pulses += [pulse(0, pin_mask, delay), pulse(pin_mask, 0, end_pulse_max - total_pulse_length)]
-
-    # 3,700 (at least) pulse between frames
+    # 9th 300 delay and 3,700 (at least) pulse between frames
+    pulses += [pulse(0, pin_mask, delay), pulse(pin_mask, 0, frame_size - total_pulse_length - delay)]
 
     pi.wave_add_generic(pulses)
     
