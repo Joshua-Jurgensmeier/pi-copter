@@ -14,8 +14,6 @@ pi = pi()
 
 pi.set_mode(OUTPUT_PIN, OUTPUT)
 
-pi.wave_clear()
-
 waves = []
 
 """
@@ -65,7 +63,7 @@ end_pulse_max = 11700
 #pi.wave_send_repeat(sync_pulse)
 
 pulses = []
-
+"""
 #add sync pulse
 pulses += [pulse(pin_mask, 0, 4000)]
 
@@ -74,16 +72,24 @@ channel_pulse_length = 1500;
 # for calculating delay between frames
 total_pulse_length = channel_pulse_length * 8
 
+
 for channel in range(8):
     # 300 delay
-    pulses += [pulse(0, pin_mask, delay), pulse(pin_mask, 0, channel_pulse_length - delay)]
+    pulses.append(pulse(0, pin_mask, delay))
 
     # 700-1,700 pulse
+    pulses.append(pulse(pin_mask, 0, channel_pulse_length - delay))
+
 
 # 9th 300 delay
-pulses += [pulse(0, pin_mask, delay), pulse(pin_mask, 0, end_pulse_max - total_pulse_length)]
+pulses.append(pulse(0, pin_mask, delay))
 
 # 3,700 (at least) pulse between frames
+pulses.append(pulse(pin_mask, 0, end_pulse_max - total_pulse_length))
+"""
+pulses.append(pulse(pin_mask, 0, 1000))
+
+pi.wave_clear()
 
 pi.wave_add_generic(pulses)
 
