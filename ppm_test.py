@@ -9,9 +9,10 @@ OUTPUT_PIN = 18
 
 pin_mask = 1 << 18
 
-pi = pigpio.pi()
+#init pigpio object
+pi = pi()
 
-pi.setmode(OUTPUT_PIN, pigpio.OUTPUT)
+pi.set_mode(OUTPUT_PIN, OUTPUT)
 
 pi.wave_clear()
 
@@ -56,34 +57,41 @@ num_channels = 8
 """
 end_pulse_max = 11700
 
-# Generates 3 wave in which all eight channels recieve 1000, 1500, 2000 microsecond pulses
+#Generate synchronization pulse.
+pi.wave_add_generic([pulse(pin_mask, 0, 4000)])
+sync_pulse = pi.wave_create()
+pi.wave_send_repeat(sync_pulse)
+
+
+# Generates 3 waves in which all eight channels recieve 1000, 1500, 2000 microsecond pulses
 # respectively (including 300 microsecond delay)
-for wave in range(3):
+for length in range(0, 2):
     pulse_length = [1000, 1500, 2000]
 
     pulses = []
 
     # for calculating delay between frames
-    total_pulse_length = pulse_length[wave] * 8
+    total_pulse_length = pulse_length[length] * 8
 
     for channel in range(8):
         # 300 delay
-        pulses += pulse(0, pin_mask, delay)
+        pulses += [pulse(0, pin_mask, delay), pulse(pin_mask, 0, pulse_length[length] - delay)]
 
         # 700-1,700 pulse
-        pulses += pulse(pin_mask, 0, pulse_length[wave] - delay)
 
     # 9th 300 delay
-    pulses += pulse(0, pin_mask, delay)
+    pulses += [pulse(0, pin_mask, delay), pulse(pin_mask, 0, end_pulse_max - total_pulse_length)]
 
     # 3,700 (at least) pulse between frames
-    pulses += pulse(pin_mask, 0, end_pulse_max - total_pulse_length)
 
     pi.wave_add_generic(pulses)
-
-    waves[wave] = pi.wave_create()
-
-for wave in waves:
-    pi.wave_send_repeat(wave)
+    
+    newWave = pi.wave_create() 
+    
+    pi.wave_send_repeat(newWave)
+    
+    print(length)
 
     sleep(5)
+
+    pi.wave_delete(newWave)
