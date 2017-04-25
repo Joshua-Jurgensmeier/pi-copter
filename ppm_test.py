@@ -65,17 +65,16 @@ pi.wave_send_repeat(sync_pulse)
 
 # Generates 3 waves in which all eight channels recieve 1000, 1500, 2000 microsecond pulses
 # respectively (including 300 microsecond delay)
-for length in range(0, 2):
-    pulse_length = [1000, 1500, 2000]
+for pulse_length in [1000, 1500, 2000]:
 
     pulses = []
 
     # for calculating delay between frames
-    total_pulse_length = pulse_length[length] * 8
+    total_pulse_length = pulse_length * 8
 
     for channel in range(8):
         # 300 delay and 700-1,700 pulse
-        pulses += [pulse(0, pin_mask, delay), pulse(pin_mask, 0, pulse_length[length] - delay)]
+        pulses += [pulse(0, pin_mask, delay), pulse(pin_mask, 0, pulse_length - delay)]
 
 
     # 9th 300 delay and 3,700 (at least) pulse between frames
@@ -87,7 +86,7 @@ for length in range(0, 2):
     
     pi.wave_send_repeat(newWave)
     
-    print(length)
+    print(pulse_length)
 
     sleep(5)
 
