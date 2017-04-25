@@ -58,13 +58,16 @@ num_channels = 8
 end_pulse_max = 11700
 
 #Generate synchronization pulse.
-pi.wave_add_generic([pulse(pin_mask, 0, 4000)])
+#pi.wave_add_generic([pulse(pin_mask, 0, 4000)])
 
-sync_pulse = pi.wave_create()
+#sync_pulse = pi.wave_create()
 
-pi.wave_send_repeat(sync_pulse)
+#pi.wave_send_repeat(sync_pulse)
 
 pulses = []
+
+#add sync pulse
+pulses += [pulse(pin_mask, 0, 4000)]
 
 channel_pulse_length = 1500;
 
