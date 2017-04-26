@@ -5,9 +5,9 @@
 from time import sleep
 from pigpio import *
 
-OUTPUT_PIN = 18
+OUTPUT_PIN = 24
 
-pin_mask = 1 << 18
+pin_mask = 1 << OUTPUT_PIN
 
 #init pigpio object
 pi = pi()
@@ -84,10 +84,12 @@ for pulse_length in [1000, 1500, 2000]:
     
     newWave = pi.wave_create() 
     
-    pi.wave_send_repeat(newWave)
+    pi.wave_send_using_mode(newWave, WAVE_MODE_REPEAT_SYNC)
     
     print(pulse_length)
 
     sleep(5)
 
     pi.wave_delete(newWave)
+
+pi.stop()
