@@ -77,7 +77,7 @@ pulses = []
 # for calculating delay between frames
 total_pulse_length = pulse_length * 8
 
-pulses += pulse(pin_mask, 0, frame_size - total_pulse_length - delay)
+pulses += [pulse(pin_mask, 0, frame_size - total_pulse_length - delay)]
 
 for channel in range(8):
     # 300 delay and 700-1,700 pulse
@@ -85,7 +85,7 @@ for channel in range(8):
 
 
 # 9th 300 delay and 3,700 (at least) pulse between frames
-pulses += pulse(0, pin_mask, delay)
+pulses += [pulse(0, pin_mask, delay)]
 pi.wave_add_generic(pulses)
 newWave = pi.wave_create() 
 pi.wave_send_using_mode(newWave, WAVE_MODE_REPEAT_SYNC)
@@ -97,6 +97,7 @@ print(pulse_length)
 
 pi.wave_delete(newWave)
 
-pi.write(OUTPUT_PIN, 0)
+pi.wave_add_generic([pulse(0, pin_mask, 1000)])
+pi.wave_send_using_mode(pi.wave_create(), WAVE_MODE_REPEAT_SYNC)
 
 pi.stop()
