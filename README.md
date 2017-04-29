@@ -1,2 +1,2 @@
-# pi-copter
-Code for my quadcopter
+# sky-plexus
+Python and C++ code for my quadcopter
