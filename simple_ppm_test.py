@@ -40,7 +40,7 @@ channels
             2,000 channel
 |_______________________________________________________________|
                             v
-                       20,000 frame
+                       22,500 frame
 
 
 9 * 300 + 8 * 1,700 + 3,700 = 20,000
@@ -56,7 +56,7 @@ num_channels = 8
  to 11,700 in order to make up the difference and keep the frame size at 20,000
 """
 
-frame_size = 20000
+frame_size = 22500
 
 """
 #Generate synchronization pulse.
@@ -74,9 +74,10 @@ pulse_length = 1000
 pulses = []
 
 
-
 # for calculating delay between frames
 total_pulse_length = pulse_length * 8
+
+pulses += pulse(pin_mask, 0, frame_size - total_pulse_length - delay)
 
 for channel in range(8):
     # 300 delay and 700-1,700 pulse
@@ -84,7 +85,7 @@ for channel in range(8):
 
 
 # 9th 300 delay and 3,700 (at least) pulse between frames
-pulses += [pulse(0, pin_mask, delay), pulse(pin_mask, 0, frame_size - total_pulse_length - delay)]
+pulses += pulse(0, pin_mask, delay)
 pi.wave_add_generic(pulses)
 newWave = pi.wave_create() 
 pi.wave_send_using_mode(newWave, WAVE_MODE_REPEAT_SYNC)
