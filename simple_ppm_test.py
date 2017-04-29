@@ -55,43 +55,47 @@ num_channels = 8
  at minimum (700) then the pulse between frames increases by 8,000 (1,000 for each frame)
  to 11,700 in order to make up the difference and keep the frame size at 20,000
 """
+
 frame_size = 20000
 
+"""
 #Generate synchronization pulse.
-pi.wave_add_generic([pulse(pin_mask, 0, 4000)])
+pi.wave_add_generic([pulse(pin_mask, 0, 40000)])
+pi.wave_add_generic([pulse(0, pin_mask, 40000)])
 sync_pulse = pi.wave_create()
 pi.wave_send_repeat(sync_pulse)
 
 """
-# Generates 3 waves in which all eight channels recieve 1000, 1500, 2000 microsecond pulses
-# respectively (including 300 microsecond delay)
-for pulse_length in [1000, 1500, 2000]:
 
-    pulses = []
+# Generates a wave in which all eight channels recieve a 1000 microsecond pulse
+# (including 300 microsecond delay)
+pulse_length = 1000
 
-    # for calculating delay between frames
-    total_pulse_length = pulse_length * 8
-
-    for channel in range(8):
-        # 300 delay and 700-1,700 pulse
-        pulses += [pulse(0, pin_mask, delay), pulse(pin_mask, 0, pulse_length - delay)]
+pulses = []
 
 
-    # 9th 300 delay and 3,700 (at least) pulse between frames
-    pulses += [pulse(0, pin_mask, delay), pulse(pin_mask, 0, frame_size - total_pulse_length - delay)]
 
-    pi.wave_add_generic(pulses)
-    
-    newWave = pi.wave_create() 
-    
-    pi.wave_send_repeat(newWave)
-    
-    print(pulse_length)
+# for calculating delay between frames
+total_pulse_length = pulse_length * 8
 
-    sleep(5)
+for channel in range(8):
+    # 300 delay and 700-1,700 pulse
+    pulses += [pulse(0, pin_mask, delay), pulse(pin_mask, 0, pulse_length - delay)]
 
-    pi.wave_delete(newWave)
-"""
-sleep(5)
+
+# 9th 300 delay and 3,700 (at least) pulse between frames
+pulses += [pulse(0, pin_mask, delay), pulse(pin_mask, 0, frame_size - total_pulse_length - delay)]
+pi.wave_add_generic(pulses)
+newWave = pi.wave_create() 
+pi.wave_send_using_mode(newWave, WAVE_MODE_REPEAT_SYNC)
+
+
+input("Press enter to stop: ")
+
+print(pulse_length)
+
+pi.wave_delete(newWave)
+
+pi.write(OUTPUT_PIN, 0)
 
 pi.stop()

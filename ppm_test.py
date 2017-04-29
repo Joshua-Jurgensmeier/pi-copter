@@ -55,13 +55,13 @@ num_channels = 8
  at minimum (700) then the pulse between frames increases by 8,000 (1,000 for each frame)
  to 11,700 in order to make up the difference and keep the frame size at 20,000
 """
-frame_size = 20000
-
+frame_size = 23000
+"""
 #Generate synchronization pulse.
 pi.wave_add_generic([pulse(pin_mask, 0, 4000)])
 sync_pulse = pi.wave_create()
 pi.wave_send_repeat(sync_pulse)
-
+"""
 
 # Generates 3 waves in which all eight channels recieve 1000, 1500, 2000 microsecond pulses
 # respectively (including 300 microsecond delay)
@@ -88,8 +88,9 @@ for pulse_length in [1000, 1500, 2000]:
     
     print(pulse_length)
 
-    sleep(5)
-
+    input("Enter to continue")
     pi.wave_delete(newWave)
 
+
+pi.write(OUTPUT_PIN, 0)
 pi.stop()
