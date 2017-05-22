@@ -1,15 +1,3 @@
-"""
-channels
- 1 : Throttle
- 2 : Roll
- 3 : Pitch
- 4 : Yaw
- 5 : FlightMode
- 6 : Collective
- 7 : Accessory0
- 8 : Accessory1
-"""
-
 # 'us' stands for microseconds.  Sorry, I ain't got no mu
 #Rev throttle and hold all other channels at neutral
 
