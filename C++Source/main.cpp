@@ -1,6 +1,9 @@
-#include "main.hpp"
 #include <chrono>
 #include <thread>
+#include <iostream>
+#include "quadcopter.hpp"
+#include <ncurses.h>
+
 
 /*
 
@@ -18,6 +21,16 @@ channels
 
 int main()
 {
+	int throttle = 0;
+
+	initscr();
+
+	cbreak();
+	noecho();
+	nodelay(stdscr, TRUE);
+
+	scrollok(stdscr, TRUE);
+
 	//init sky-plexus quad
 	Quadcopter spq1;
 
@@ -26,9 +39,20 @@ int main()
 
 	std::cout << "Throttle up";
 	// the number of surfaces being updated, the channel, the value
-	spq1.control(1, 't', 80);
+	while (getch() != ' ')
+	{
+		if (getch() == KEY_UP)
+		{
+			std::cout << "up";
+		}
+		else if (getch() == KEY_DOWN)
+		{
+			std::cout << "down";
+		}
+	}
+	//spq1.control(1, 't', 80);
 
-	std::this_thread::sleep_for(std::chrono::seconds(3)); //I want python back...
+	//std::this_thread::sleep_for(std::chrono::seconds(3)); //I want python back...
 
 	std::cout << "Disarming...";
 	spq1.disarm();
