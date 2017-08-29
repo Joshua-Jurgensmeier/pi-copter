@@ -62,7 +62,7 @@ for channel in range(num_channels):
     pulses += [pulse(pin_mask, 0, channel_vals_us[channel])]
 
 #add last (9th) delay
-total_length += delay_us
+total_length_us += delay_us
 pulses += [pulse(0, pin_mask, delay_us)]
 
 #add sync pulse at beginning of frame

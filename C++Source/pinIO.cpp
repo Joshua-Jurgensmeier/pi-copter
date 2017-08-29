@@ -79,7 +79,7 @@ void PinIO::sendPPM(std::map<char, int> &channels)
 	//Add sync pulse
 	frame[pulseCounter].gpioOn = pinMask;
 	frame[pulseCounter].gpioOff = 0;
-	frame[pulseCounter].usDelay = usFrameSize - usTotalLength - usDelay;
+	frame[pulseCounter].usDelay = usFrameSize - usTotalLength;
 
 	//Send it out
 	wave_clear(pi);

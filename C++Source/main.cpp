@@ -20,7 +20,7 @@ channels
 
 int main()
 {
-        int throttle = 0;
+        int throttle = 100;
 
         //init sky-plexus quad
         Quadcopter spq1;
@@ -30,7 +30,11 @@ int main()
         spq1.arm();
 
         std::cout << "Throttle up" << std::endl;
+	spq1.control(1, 't', throttle);
 
+	std::this_thread::sleep_for(std::chrono::seconds(3)); //I want python back...
+
+	/*
         // Sorry for long line.
         std::cout << "Press [w] and then [ENTER] to increase throttle, [s] and then [ENTER] to decrease throttle, and [space] and [Enter] to terminate" << std::endl;
 
@@ -59,7 +63,7 @@ int main()
 
                 //std::this_thread::sleep_for(std::chrono::seconds(1)); //I want python back...
 
-        } while (gottenChar != ' ');
+        } while (gottenChar != ' ');*/
 
         std::cout << "Disarming..." << std::endl;
         spq1.disarm();
