@@ -30,6 +30,7 @@ private:
 
 	
 	Channel -> ppm value (1000-2000) 
+
 	When Quadcopter::control() is called, only the surfaces being updated
 	need to be passed in.  The last value that the unchanged surfaces had 
 	is pulled out of channelState and given to pinIO::sendPPM()  */
@@ -46,7 +47,7 @@ private:
 	};
 };
 
-Quadcopter::Quadcopter()
+inline Quadcopter::Quadcopter()
 {
 	
 }

@@ -2,7 +2,6 @@
 #include <thread>
 #include <iostream>
 #include "quadcopter.hpp"
-#include <ncurses.h>
 
 
 /*
@@ -10,50 +9,59 @@
 channels
 1 | Throttle   |  t
 2 | Roll       |  r
-3 | Pitch	   |  p
-4 | Yaw		   |  y
+3 | Pitch          |  p
+4 | Yaw            |  y
 5 | FlightMode |  m <- for backflips?
-6 | Collective |  c	<- probably not used...
-7 | Accessory0 |  0	<- for like arming
-8 | Accessory1 |  1	<- more backflips?
+6 | Collective |  c     <- probably not used...
+7 | Accessory0 |  0     <- for like arming
+8 | Accessory1 |  1     <- more backflips?
 
 */
 
 int main()
 {
-	int throttle = 0;
+        int throttle = 0;
 
-	initscr();
+        //init sky-plexus quad
+        Quadcopter spq1;
 
-	cbreak();
-	noecho();
-	nodelay(stdscr, TRUE);
+        //std::cout << "Arming...";
+        std::cout << "Arming..." << std::endl;
+        spq1.arm();
 
-	scrollok(stdscr, TRUE);
+        std::cout << "Throttle up" << std::endl;
 
-	//init sky-plexus quad
-	Quadcopter spq1;
+        // Sorry for long line.
+        std::cout << "Press [w] and then [ENTER] to increase throttle, [s] and then [ENTER] to decrease throttle, and [space] and [Enter] to terminate" << std::endl;
 
-	std::cout << "Arming...";
-	spq1.arm();
+        char gottenChar;
+        do
+        {
+                gottenChar = getchar();
 
-	std::cout << "Throttle up";
-	// the number of surfaces being updated, the channel, the value
-	while (getch() != ' ')
-	{
-		if (getch() == KEY_UP)
-		{
-			std::cout << "up";
-		}
-		else if (getch() == KEY_DOWN)
-		{
-			std::cout << "down";
-		}
-	}
-	//spq1.control(1, 't', 80);
+                if (gottenChar == 's')
+                {
+                        std::cout << "down" << std::endl;
+                        throttle -= 10;
+                        gottenChar = '0';
+                }
+                else if (gottenChar == 'w')
+                {
+                        std::cout << "up" << std::endl;
+                        throttle += 10;
+                        gottenChar = '0';
+                }
 
-	//std::this_thread::sleep_for(std::chrono::seconds(3)); //I want python back...
+                // The number of surfaces being updated, the channel, the value.
+                spq1.control(1, 't', throttle);
 
-	std::cout << "Disarming...";
-	spq1.disarm();
+                std::cout << throttle << std::endl;
+
+                //std::this_thread::sleep_for(std::chrono::seconds(1)); //I want python back...
+
+        } while (gottenChar != ' ');
+
+        std::cout << "Disarming..." << std::endl;
+        spq1.disarm();
+
 }

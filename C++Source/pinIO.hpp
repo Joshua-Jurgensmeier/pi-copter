@@ -17,10 +17,10 @@ private:
 	
 };
 
-PinIO::PinIO()
+inline PinIO::PinIO()
 {
 }
 
-PinIO::~PinIO()
+inline PinIO::~PinIO()
 {
 }

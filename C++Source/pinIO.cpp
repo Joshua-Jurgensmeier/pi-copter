@@ -34,10 +34,13 @@ void PinIO::sendPPM(std::map<char, int> &channels)
 	int numPulses = 18;
 	gpioPulse_t frame[numPulses]; //The actual frame, composed of 18 pulses.
 
+	int pi; //The pigpiod address thing
+
 	//Connect to pigpio daemon and store the connection
-	pi = pigpio_start();
+	pi = pigpio_start(NULL, NULL);
+
 	//We will be outputting ppm on pin 24
-	set_mode(pin, PI_OUTPUT);
+	set_mode(pi, pin, PI_OUTPUT);
 
 
 	//Add channel delays and values
