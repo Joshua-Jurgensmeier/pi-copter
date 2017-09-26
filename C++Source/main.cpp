@@ -34,37 +34,6 @@ int main()
 
 	std::this_thread::sleep_for(std::chrono::seconds(3)); //I want python back...
 
-	/*
-        // Sorry for long line.
-        std::cout << "Press [w] and then [ENTER] to increase throttle, [s] and then [ENTER] to decrease throttle, and [space] and [Enter] to terminate" << std::endl;
-
-        char gottenChar;
-        do
-        {
-                gottenChar = getchar();
-
-                if (gottenChar == 's')
-                {
-                        std::cout << "down" << std::endl;
-                        throttle -= 10;
-                        gottenChar = '0';
-                }
-                else if (gottenChar == 'w')
-                {
-                        std::cout << "up" << std::endl;
-                        throttle += 10;
-                        gottenChar = '0';
-                }
-
-                // The number of surfaces being updated, the channel, the value.
-                spq1.control(1, 't', throttle);
-
-                std::cout << throttle << std::endl;
-
-                //std::this_thread::sleep_for(std::chrono::seconds(1)); //I want python back...
-
-        } while (gottenChar != ' ');*/
-
         std::cout << "Disarming..." << std::endl;
         spq1.disarm();
 
